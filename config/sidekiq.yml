@@ -1,0 +1,12 @@
+---
+:max_retries: 3
+:pidfile: tmp/pids/sidekiq.pid
+:concurrency: 2
+staging:
+  :concurrency: 5
+  :logfile: ./log/sidekiq.log
+production:
+  :concurrency: 5
+  :logfile: ./log/sidekiq.log
+:queues:
+  - [default, 1]

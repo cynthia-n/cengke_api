@@ -1,0 +1,27 @@
+server_app: 'cengke'
+host: 'https://api.17cengke.com/'
+running_env: 'staging'
+
+redis:
+  # host: '127.0.0.1'
+  # port: 6379
+  db: 1
+
+rails_cache:
+  redis:
+    # host: ''
+    # port:
+    # db:
+    namespace: "rails_cache"
+
+sidekiq:
+  redis: 'redis://127.0.0.1:6379/0'
+
+db_settings:
+  fanink_sso:
+    host: '127.0.0.1'
+    port: '5432'
+    database: cengke
+    username:
+    password:
+    pool: 5

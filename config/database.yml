@@ -1,0 +1,25 @@
+default: &default
+  adapter: mysql2
+  encoding: unicode
+  database: <%= Settings.db_settings.cengke.database %>
+  port: <%= Settings.db_settings.cengke.port %>
+  host: <%= Settings.db_settings.cengke.host %>
+  username: <%= Settings.db_settings.cengke.username %>
+  password: <%= Settings.db_settings.cengke.password %>
+  pool: <%= Settings.db_settings.cengke.pool %>
+
+development:
+  <<: *default
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: <%= Settings.db_settings.cengke.database %>_test
+
+production:
+  <<: *default
+
+staging:
+  <<: *default
