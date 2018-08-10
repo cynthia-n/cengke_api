@@ -1,6 +1,6 @@
 default: &default
   adapter: mysql2
-  encoding: unicode
+  encoding: utf8mb4
   database: <%= Settings.db_settings.cengke.database %>
   port: <%= Settings.db_settings.cengke.port %>
   host: <%= Settings.db_settings.cengke.host %>

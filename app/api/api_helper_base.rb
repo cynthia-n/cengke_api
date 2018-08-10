@@ -8,13 +8,14 @@ module ApiHelperBase
 
   def current_user
     return @user if @user
-    if cookies[:utoken].present?
-      @user ||= User.where(token: cookies[:utoken]).first
-      if @user.present? && (@user.last_sign_in_at + 1.days) < Time.now
+    if headers["Token"].present?
+      @user ||= User.where(token: headers["Token"]).first
+      if @user.present? && (@user.last_sign_in_at + 5.minutes) < Time.now
+      # if @user.present? && (@user.last_sign_in_at + 7.days) < Time.now
         @user = nil
       end
     end
-    if (Rails.env.testing? || Rails.env.development? ) && params[:current_user_id].present?
+    if (Rails.env.staging? || Rails.env.testing? || Rails.env.development? ) && params[:current_user_id].present?
       @user ||= User.new(id: params[:current_user_id])
     end
     @user

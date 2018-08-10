@@ -25,3 +25,15 @@ db_settings:
     username:
     password:
     pool: 5
+
+third_party:
+  wechat:
+    official_account:
+      appid:
+      secret:
+    mini_program:
+      appid:
+      secret:
+    open_platform:
+      appid:
+      secret:
