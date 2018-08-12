@@ -10,7 +10,7 @@ module V1
       end
       get "/:id/cards" do
         data = paginate(
-          Card.includes(:media, questions: [:options]).where(
+          Card.list_with_user(current_user.id).includes(:media, questions: [:options]).where(
             chapter_id: params[:id]
           ).order(id: :asc),
           params[:page], params[:per_page]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180809174549) do
+ActiveRecord::Schema.define(version: 20180811013547) do
 
   create_table "cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.bigint "chapter_id"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20180809174549) do
     t.boolean "is_free"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "like_base_count"
+    t.integer "share_base_count"
     t.index ["chapter_id"], name: "index_cards_on_chapter_id"
   end
 
@@ -72,6 +74,20 @@ ActiveRecord::Schema.define(version: 20180809174549) do
     t.string "crowd"
     t.decimal "fee", precision: 20, scale: 2
     t.decimal "origin_fee", precision: 20, scale: 2
+    t.integer "learning_base_count"
+  end
+
+  create_table "user_cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.bigint "user_id"
+    t.bigint "card_id"
+    t.integer "status"
+    t.datetime "unlock_at"
+    t.datetime "start_at"
+    t.datetime "finish_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_user_cards_on_card_id"
+    t.index ["user_id"], name: "index_user_cards_on_user_id"
   end
 
   create_table "user_connections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -106,5 +122,7 @@ ActiveRecord::Schema.define(version: 20180809174549) do
   add_foreign_key "media", "cards"
   add_foreign_key "options", "questions"
   add_foreign_key "questions", "cards"
+  add_foreign_key "user_cards", "cards"
+  add_foreign_key "user_cards", "users"
   add_foreign_key "user_connections", "users"
 end

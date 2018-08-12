@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   has_many :user_connections
 
+  has_many :user_cards
+  has_many :cards, through: :user_cards
+
   validates :token, uniqueness: true, allow_blank: true
   validates :wechat_unionid, uniqueness: true, presence: true
 

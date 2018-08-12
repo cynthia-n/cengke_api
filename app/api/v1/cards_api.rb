@@ -7,7 +7,7 @@ module V1
         requires :id, type: Integer, desc: 'id'
       end
       get "/:id" do
-        data = Card.where(id: params[:id]).first
+        data = Card.list_with_user(current_user.id).where(id: params[:id]).first
         return_fail('不存在') if data.blank?
         return_success(data, with: ::Entities::Card)
       end

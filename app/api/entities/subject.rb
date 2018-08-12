@@ -13,7 +13,7 @@ module Entities
     expose :fee, documentation: { type: Float, desc: "现价" }
     expose :origin_fee, documentation: { type: Float, desc: "原价" }
     expose :count, documentation: { type: Integer, desc: "正在学人数" } do |data, _options|
-      data.status == 'pending' ? 0 : 102303
+      data.status == 'pending' ? 0 : data.learning_count
     end
     expose :users, documentation: { type: Integer, desc: "正在学人" } do |data, _options|
       data.status == 'pending' ? [] : [

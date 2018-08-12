@@ -16,4 +16,19 @@ class Subject < ApplicationRecord
   def crowd_arr
     crowd&.split(",") || []
   end
+
+  def cards
+    Card.includes(:chapter).where(chapters: {subject_id: self.id})
+  end
+
+  def learning_count
+    (self.learning_base_count || 666) + (real_learning_count || 0) * 5
+  end
+
+  def real_learning_count
+    Rails.cache.fetch("subject_real_learning_count_#{self.id}", expires_in: 5.minutes) do
+      UserCard.includes(card: [:chapter]).where(chapters: {subject_id: self.id}).select("distinct(user_id)").count
+    end
+  end
+
 end
