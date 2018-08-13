@@ -48,6 +48,18 @@ module V1
       desc "微信小程序登录"
       params do
         requires :code, type: String, desc: 'wechat code'
+      end
+      post "/mini_program_login_session" do
+        ret = Auth::Wechat.login_mini_program(code)
+        return return_fail('登录授权失败') if ret[:status] == false
+        session = Redis::Value.new("mini_program_login_session_#{code}", expiration: 5.minutes, marshal: true)
+        session.value = session
+        return_success(true)
+      end
+
+      desc "微信小程序登录"
+      params do
+        requires :code, type: String, desc: 'wechat code'
         requires :scene, type: String, desc: 'scene'
         optional :share_ticket, type: String, desc: 'share_ticket'
         requires :data, type: Hash do

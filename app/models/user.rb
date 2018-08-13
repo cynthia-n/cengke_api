@@ -35,8 +35,11 @@ class User < ApplicationRecord
   end
 
   def self.login_mini_program(code, data, scene = nil, share_ticket= nil)
-    ret = Auth::Wechat.login_mini_program(code)
-    raise '登录授权失败' if ret[:status] == false
+    session = Redis::Value.new("mini_program_login_session_#{code}", expiration: 5.minutes, marshal: true)
+        session
+    ret = session.value
+    session.delete
+    raise '登录授权失败' if ret.blank? && ret[:status] == false
     sign = Auth::Wechat.mini_program_encrypt(data["rawData"] + ret.dig(:data, "session_key"))
     raise '登录信息校验失败' unless sign == data["signature"]
     info = Auth::Wechat.mini_program_decrypt(
