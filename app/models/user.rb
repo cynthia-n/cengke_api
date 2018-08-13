@@ -39,6 +39,7 @@ class User < ApplicationRecord
         session
     ret = session.value
     session.delete
+    Rails.logger.error [code, ret, data].to_json
     raise '登录授权失败' if ret.blank? && ret[:status] == false
     sign = Auth::Wechat.mini_program_encrypt(data["rawData"] + ret.dig(:data, "session_key"))
     raise '登录信息校验失败' unless sign == data["signature"]
