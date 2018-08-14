@@ -50,9 +50,9 @@ module V1
         requires :code, type: String, desc: 'wechat code'
       end
       post "/mini_program_login_session" do
-        ret = Auth::Wechat.login_mini_program(code)
+        ret = Auth::Wechat.login_mini_program(params[:code])
         return return_fail('登录授权失败') if ret[:status] == false
-        session = Redis::Value.new("mini_program_login_session_#{code}", expiration: 5.minutes, marshal: true)
+        session = Redis::Value.new("mini_program_login_session_#{params[:code]}", expiration: 10.minutes, marshal: true)
         session.value = session
         return_success(true)
       end
