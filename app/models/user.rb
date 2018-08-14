@@ -38,7 +38,6 @@ class User < ApplicationRecord
     session = Redis::Value.new("mini_program_login_session_#{code}", expiration: 5.minutes, marshal: true)
         session
     ret = session.value
-    session.delete
     Rails.logger.error [code, ret, data].to_json
     raise '登录授权失败' if ret.blank? || ret[:status] == false
     sign = Auth::Wechat.mini_program_encrypt(data["rawData"] + ret.dig(:data, "session_key"))
@@ -65,6 +64,7 @@ class User < ApplicationRecord
     connection.info = info.to_json
     connection.save!
     user.save!
+    session.delete
     user
   end
 

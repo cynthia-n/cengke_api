@@ -53,7 +53,7 @@ module V1
         ret = Auth::Wechat.login_mini_program(params[:code])
         return return_fail('登录授权失败') if ret[:status] == false
         session = Redis::Value.new("mini_program_login_session_#{params[:code]}", expiration: 10.minutes, marshal: true)
-        session.value = session
+        session.value = ret
         return_success(true)
       end
 
