@@ -18,6 +18,21 @@ module V1
         return_success(data, with: ::Entities::Card)
       end
 
+      desc "章节分享"
+      params do
+        requires :id, type: Integer, desc: 'id'
+      end
+      post "/:id/share" do
+        chapert = Chapert.where(id: params[:id]).first
+        return return_fail('不存在') if chapert.blank?
+        share = Share.find_or_create_by(user: current_user, source: chapert)
+        if share.id.present?
+          return_success(true)
+        else
+          return_fail('分享失败')
+        end
+      end
+
     end
   end
 end

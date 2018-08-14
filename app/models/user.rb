@@ -7,6 +7,9 @@ class User < ApplicationRecord
   validates :token, uniqueness: true, allow_blank: true
   validates :wechat_unionid, uniqueness: true, presence: true
 
+  has_many :likes
+  has_many :shares
+
   def login(ip = nil)
     self.token = SecureRandom.uuid.gsub("-", '')
     self.last_sign_in_at = Time.now

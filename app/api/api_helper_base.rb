@@ -10,8 +10,7 @@ module ApiHelperBase
     return @user if @user
     if headers["Token"].present?
       @user ||= User.where(token: headers["Token"]).first
-      if @user.present? && (@user.last_sign_in_at + 5.minutes) < Time.now
-      # if @user.present? && (@user.last_sign_in_at + 7.days) < Time.now
+      if @user.present? && (@user.last_sign_in_at + 7.days) < Time.now
         @user = nil
       end
     end

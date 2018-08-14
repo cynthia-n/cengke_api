@@ -21,7 +21,7 @@ module V1
       end
       get "/:id" do
         data = Subject.where(id: params[:id]).first
-        return_fail('不存在') if data.blank?
+        return return_fail('不存在') if data.blank?
         return_success(data, with: ::Entities::Subject)
       end
 

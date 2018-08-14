@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180811013547) do
+ActiveRecord::Schema.define(version: 20180814083436) do
 
   create_table "cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.bigint "chapter_id"
@@ -24,6 +24,18 @@ ActiveRecord::Schema.define(version: 20180811013547) do
     t.index ["chapter_id"], name: "index_cards_on_chapter_id"
   end
 
+  create_table "cengkes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.bigint "user_id"
+    t.integer "source_user_id"
+    t.bigint "card_id"
+    t.boolean "is_new_friend"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_cengkes_on_card_id"
+    t.index ["source_user_id"], name: "index_cengkes_on_source_user_id"
+    t.index ["user_id"], name: "index_cengkes_on_user_id"
+  end
+
   create_table "chapters", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.bigint "subject_id"
     t.string "title"
@@ -32,6 +44,16 @@ ActiveRecord::Schema.define(version: 20180811013547) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["subject_id"], name: "index_chapters_on_subject_id"
+  end
+
+  create_table "likes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.bigint "user_id"
+    t.string "source_type"
+    t.bigint "source_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["source_type", "source_id"], name: "index_likes_on_source_type_and_source_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "media", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -59,6 +81,16 @@ ActiveRecord::Schema.define(version: 20180811013547) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_questions_on_card_id"
+  end
+
+  create_table "shares", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.bigint "user_id"
+    t.string "source_type"
+    t.bigint "source_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["source_type", "source_id"], name: "index_shares_on_source_type_and_source_id"
+    t.index ["user_id"], name: "index_shares_on_user_id"
   end
 
   create_table "subjects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -118,10 +150,14 @@ ActiveRecord::Schema.define(version: 20180811013547) do
   end
 
   add_foreign_key "cards", "chapters"
+  add_foreign_key "cengkes", "cards"
+  add_foreign_key "cengkes", "users"
   add_foreign_key "chapters", "subjects"
+  add_foreign_key "likes", "users"
   add_foreign_key "media", "cards"
   add_foreign_key "options", "questions"
   add_foreign_key "questions", "cards"
+  add_foreign_key "shares", "users"
   add_foreign_key "user_cards", "cards"
   add_foreign_key "user_cards", "users"
   add_foreign_key "user_connections", "users"
