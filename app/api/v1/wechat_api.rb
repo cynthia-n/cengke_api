@@ -54,7 +54,7 @@ module V1
         return return_fail('登录授权失败') if ret[:status] == false
         session = Redis::Value.new("mini_program_login_session_#{params[:code]}", expiration: 10.minutes, marshal: true)
         session.value = ret
-        return_success(true)
+        return_success({unauth_token: params[:code]})
       end
 
       desc "微信小程序登录"
