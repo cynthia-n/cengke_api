@@ -68,7 +68,7 @@ module V1
       post "/:id/unliked" do
         card = Card.where(id: params[:id]).first
         return return_fail('不存在') if card.blank?
-        Like.where(user: current_user, source: card).delete_all!
+        Like.where(user: current_user, source: card).delete_all
         return_success(true)
       end
 
