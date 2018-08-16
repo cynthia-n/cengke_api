@@ -33,6 +33,15 @@ module V1
         end
       end
 
+      desc "章节蹭课情况", with: ::Entities::User
+      params do
+        requires :id, type: Integer, desc: 'id'
+      end
+      get "/:id/current_cengke_info" do
+        data = Cengke.includes(:card, :user).where(source_user_id: current_user.id, cards: {chapter_id: params[:id]}, is_new_friend: true).map(&:user)
+        return_success(data, with: ::Entities::User)
+      end
+
     end
   end
 end

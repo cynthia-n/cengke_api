@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180814083436) do
+ActiveRecord::Schema.define(version: 20180816081833) do
 
   create_table "cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.bigint "chapter_id"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20180814083436) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "duration"
     t.index ["card_id"], name: "index_media_on_card_id"
   end
 

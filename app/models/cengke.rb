@@ -1,4 +1,6 @@
 class Cengke < ApplicationRecord
+  belongs_to :card
+  belongs_to :user
 
   validate :validate_cengke
 
