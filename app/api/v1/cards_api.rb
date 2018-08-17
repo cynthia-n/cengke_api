@@ -104,7 +104,7 @@ module V1
         requires :share_id, type: Integer, desc: '分享id'
       end
       post "cengke" do
-        share = Share.where(id: params[:id], source_type: "Card").first
+        share = Share.where(id: params[:share_id], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
         cengke = Cengke.find_or_initialize_by(
           user: current_user,
