@@ -112,7 +112,10 @@ module V1
           card: card
         )
         if cengke.id.present? || cengke.save
-          return_success(true)
+          return_success({
+            sum: 20,
+            count: Cengke.where(source_user_id: share.user_id,card: card).count
+          })
         else
           return_fail("蹭课失败", format_vali_error_data(cengke))
         end
