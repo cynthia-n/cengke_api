@@ -94,7 +94,7 @@ module V1
       get "/share/:id" do
         share = Share.where(id: params[:id], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
-        data = Card.list_with_user(current_user.id).where(id: share.card_id).first
+        data = Card.list_with_user(current_user.id).where(id: share.source_id).first
         return return_fail('不存在') if data.blank?
         return_success(data, with: ::Entities::Card)
       end
