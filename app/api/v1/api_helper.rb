@@ -12,7 +12,7 @@ module V1::APIHelper
   ].freeze
 
   def need_auth?
-    !(SKIP_AUTH_LIST.include?(request.path))
+    !(SKIP_AUTH_LIST.include?(request.path) || request.path.include?("/api/v1/cards/share/general"))
   end
 
 end
