@@ -101,10 +101,10 @@ module V1
 
       desc "课程卡分享首页详情", entity: ::Entities::Card
       params do
-        requires :id, type: Integer, desc: 'id'
+        requires :share_id, type: Integer, desc: 'share_id'
       end
-      get "/share/general/:id" do
-        share = Share.where(id: params[:id], source_type: "Card").first
+      get "/share/general" do
+        share = Share.where(id: params[:share_id], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
         data = Card.list_with_user(current_user.id).where(id: share.source_id).first
         return return_fail('该卡片不存在') if data.blank?
