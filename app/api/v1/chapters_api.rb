@@ -42,6 +42,14 @@ module V1
         return_success(data, with: ::Entities::User)
       end
 
+      desc "章节学习情况"
+      params do
+        requires :id, type: Integer, desc: 'id'
+      end
+      get "/:id/learning_situation" do
+        return_success({beyond: 60 + (rand(398)/10.0)})
+      end
+
     end
   end
 end
