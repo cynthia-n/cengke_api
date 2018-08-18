@@ -8,6 +8,7 @@ module V1::APIHelper
     "/api/v1/wechat/auth_callback",
     "/api/v1/wechat/mini_program_login",
     "/api/v1/wechat/mini_program_login_session",
+    "/api/v1/cards/share/general"
   ].freeze
 
   def need_auth?

@@ -103,7 +103,7 @@ module V1
       params do
         requires :id, type: Integer, desc: 'id'
       end
-      get "/share/:id/general" do
+      get "/share/general/:id" do
         share = Share.where(id: params[:id], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
         data = Card.list_with_user(current_user.id).where(id: share.source_id).first
