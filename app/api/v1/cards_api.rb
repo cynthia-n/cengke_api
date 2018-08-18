@@ -118,7 +118,8 @@ module V1
             title: data&.title
           },
           subject: {
-            title: data&.chapter&.subject&.name
+            title: data&.chapter&.subject&.name,
+            introduction: data&.chapter&.subject&.introduction
           },
           max_share_count: 20
         })
