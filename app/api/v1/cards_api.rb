@@ -95,8 +95,33 @@ module V1
         share = Share.where(id: params[:id], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
         data = Card.list_with_user(current_user.id).where(id: share.source_id).first
-        return return_fail('不存在') if data.blank?
+        return return_fail('该卡片不存在') if data.blank?
         return_success(data, with: ::Entities::Card)
+      end
+
+      desc "课程卡分享首页详情", entity: ::Entities::Card
+      params do
+        requires :id, type: Integer, desc: 'id'
+      end
+      get "/share/:id/general" do
+        share = Share.where(id: params[:id], source_type: "Card").first
+        return return_fail('该分享不存在') if share.blank?
+        data = Card.list_with_user(current_user.id).where(id: share.source_id).first
+        return return_fail('该卡片不存在') if data.blank?
+        user = share.user
+        return_success({
+          user: {
+            nickname: user.nickname,
+            avatar: user.avatar
+          },
+          card: {
+            title: data&.title
+          },
+          subject: {
+            title: data&.chapter&.subject&.name
+          },
+          max_share_count: 20
+        })
       end
 
       desc "蹭课程卡"
@@ -113,8 +138,8 @@ module V1
         )
         if cengke.id.present? || cengke.save
           return_success({
-            sum: 20,
-            count: Cengke.where(source_user_id: share.user_id,card: card).count
+            max_share_count: 20,
+            current_share_count: Cengke.where(source_user_id: share.user_id,card: card).count
           })
         else
           return_fail("蹭课失败", format_vali_error_data(cengke))
