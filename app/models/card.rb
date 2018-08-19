@@ -3,6 +3,9 @@ class Card < ApplicationRecord
   has_many :questions
   belongs_to :chapter
 
+  has_many :likes, as: :source
+  has_many :shares, as: :source
+
 
   has_many :user_cards
   has_many :users, through: :user_cards
@@ -21,7 +24,7 @@ class Card < ApplicationRecord
   end
 
   def real_share_count
-    88
+    self.shares.count
   end
 
   def like_count
@@ -29,6 +32,6 @@ class Card < ApplicationRecord
   end
 
   def real_like_count
-    99
+    self.likes.count
   end
 end
