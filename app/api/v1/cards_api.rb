@@ -145,7 +145,7 @@ module V1
         )
         if cengke.id.present? || cengke.save
           return_success({
-            max_share_count: 20,
+            max_share_count: card.is_free ? nil : 20,
             current_share_count: Cengke.where(source_user_id: share.user_id,card: card).count
           })
         else
