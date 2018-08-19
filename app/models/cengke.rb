@@ -5,7 +5,7 @@ class Cengke < ApplicationRecord
   validate :validate_cengke
 
   before_save :set_is_new_friend
-  # after_save :user_unlock_card
+  after_save :user_unlock_card
 
   scope :today_cengke, -> {
     where("created_at between ? and ?",
@@ -31,7 +31,23 @@ class Cengke < ApplicationRecord
     self.is_new_friend = Cengke.where(source_user_id: self.source_user_id, user_id: self.user_id).present?
   end
 
-  # def user_unlock_card
-  #   Cengke.where(user_id: self.user_id).where("created_at between #{} and #{}").count >= 5
-  # end
+  def user_unlock_card
+    a = UserCard.find_or_initialize_by(user_id: self.user_id, card_id: self.card_id)
+    a.unlock_at ||= Time.now
+    a.status ||= 'unlock'
+    a.save
+    chapter_id =  self.card.chapter_id
+    chapter_new_friend_size = Cengke.includes(:card).where(
+      source_user_id: self.source_user_id,
+      cards: {chapter_id: chapter_id}
+    ).count
+    if chapter_new_friend_size == 3
+      Card.where(chapter_id: chapter_id, is_free: false).map{|c|
+        a = UserCard.find_or_initialize_by(user_id: self.source_user_id, card_id: c.id)
+        a.unlock_at ||= Time.now
+        a.status ||= 'unlock'
+        a.save
+      }
+    end
+  end
 end
