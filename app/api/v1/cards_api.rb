@@ -132,6 +132,8 @@ module V1
       post "cengke" do
         share = Share.where(id: params[:share_id], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
+        card = Card.where(id: share.source_id).first
+        return return_fail('该卡片不存在') if data.blank?
         cengke = Cengke.find_or_initialize_by(
           user: current_user,
           source_user_id: share.user_id,
