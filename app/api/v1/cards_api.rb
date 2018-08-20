@@ -146,7 +146,9 @@ module V1
         if cengke.id.present? || cengke.save
           return_success({
             max_share_count: card.is_free ? nil : 20,
-            current_share_count: Cengke.where(source_user_id: share.user_id,card: card).count
+            current_share_count: Cengke.where(source_user_id: share.user_id,card: card).count,
+            fail: cengke.fail,
+            error: cengke.error
           })
         else
           return_fail("蹭课失败", format_vali_error_data(cengke))

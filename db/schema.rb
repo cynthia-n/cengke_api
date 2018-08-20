@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180819140737) do
+ActiveRecord::Schema.define(version: 20180820140959) do
 
   create_table "cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.bigint "chapter_id"
@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(version: 20180819140737) do
     t.boolean "is_new_friend"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "fail"
+    t.string "error"
     t.index ["card_id"], name: "index_cengkes_on_card_id"
     t.index ["source_user_id"], name: "index_cengkes_on_source_user_id"
     t.index ["user_id"], name: "index_cengkes_on_user_id"

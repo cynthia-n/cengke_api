@@ -4,26 +4,33 @@ class Cengke < ApplicationRecord
 
   validate :validate_cengke
 
+  before_save :set_cengke_status
+
   before_save :set_is_new_friend
   after_save :user_unlock_card
 
-  scope :today_cengke, -> {
+  scope :week_cengke, -> {
     where("created_at between ? and ?",
-      Time.now.beginning_of_day,
-      Time.now.end_of_day)
+      Time.now.beginning_of_week,
+      Time.now.end_of_week)
   }
+
+  def set_cengke_status
+    self.fail = false
+    unless self.card.is_free
+      if Cengke.where(source_user_id: self.source_user_id, card_id: self.card_id, fail: false).count >= 20
+        self.fail = true
+        self.error = '该卡片已蹭完'
+      elsif Cengke.where(user_id: self.user_id, fail: false).week_cengke.count >= 5
+        self.fail = true
+        self.error = '本周蹭课机会已用完'
+      end
+    end
+  end
 
   def validate_cengke
     if self.user_id == self.source_user_id
       errors.add(:source_user_id, "不能蹭自己的课")
-    end
-    unless self.card.is_free
-      if Cengke.where(source_user_id: self.source_user_id, card_id: self.card_id).count >= 20
-        errors.add(:card_id, "该卡片已蹭完")
-      end
-      if Cengke.where(user_id: self.user_id).today_cengke.count >= 5
-        errors.add(:card_id, "今日蹭课机会已用完")
-      end
     end
   end
 
@@ -32,13 +39,16 @@ class Cengke < ApplicationRecord
   end
 
   def user_unlock_card
-    a = UserCard.find_or_initialize_by(user_id: self.user_id, card_id: self.card_id)
-    a.unlock_at ||= Time.now
-    a.status ||= 'unlock'
-    a.save
+    if self.fail == false
+      a = UserCard.find_or_initialize_by(user_id: self.user_id, card_id: self.card_id)
+      a.unlock_at ||= Time.now
+      a.status ||= 'unlock'
+      a.save
+    end
     chapter_id =  self.card.chapter_id
     chapter_new_friend_size = Cengke.includes(:card).where(
       source_user_id: self.source_user_id,
+      is_new_friend: true,
       cards: {chapter_id: chapter_id}
     ).count
     if chapter_new_friend_size == 3

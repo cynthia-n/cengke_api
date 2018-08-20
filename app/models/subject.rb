@@ -22,7 +22,7 @@ class Subject < ApplicationRecord
   end
 
   def learning_count
-    (self.learning_base_count || 666) + (real_learning_count || 0) * 5
+    (self.learning_base_count || 0) + (real_learning_count || 0) * 5
   end
 
   def real_learning_count
