@@ -23,6 +23,7 @@ module Entities
     expose :subject, documentation: { type: String, desc: "学科详情" } do |data, _options|
       subject = data.chapter.subject
       {
+        id: subject.id,
         name: subject.name,
         introduction: subject.introduction
       }
