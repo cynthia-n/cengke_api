@@ -87,7 +87,7 @@ module V1
         end
       end
 
-      desc "课程卡分享详情", entity: ::Entities::Card
+      desc "课程卡分享详情", entity: ::Entities::ShareCard
       params do
         requires :id, type: Integer, desc: 'id'
       end
@@ -96,7 +96,7 @@ module V1
         return return_fail('该分享不存在') if share.blank?
         data = Card.list_with_user(current_user.id).where(id: share.source_id).first
         return return_fail('该卡片不存在') if data.blank?
-        return_success(data, with: ::Entities::Card)
+        return_success(data, with: ::Entities::ShareCard)
       end
 
       desc "课程卡分享首页详情", entity: ::Entities::Card
