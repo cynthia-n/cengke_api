@@ -16,12 +16,7 @@ module Entities
       data.status == 'pending' ? 0 : data.learning_count
     end
     expose :users, documentation: { type: Integer, desc: "正在学人" } do |data, _options|
-      data.status == 'pending' ? [] : [
-        {avatar: "http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKnF0VhzEIvZPiaTVls3qqaTmA0DO43EtggDItzibKonqZ16m5wnyV9RzalFlny81bFyRLcM1pQUiapA/132"},
-        {avatar: "http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKnF0VhzEIvZPiaTVls3qqaTmA0DO43EtggDItzibKonqZ16m5wnyV9RzalFlny81bFyRLcM1pQUiapA/132"},
-        {avatar: "http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKnF0VhzEIvZPiaTVls3qqaTmA0DO43EtggDItzibKonqZ16m5wnyV9RzalFlny81bFyRLcM1pQUiapA/132"},
-        {avatar: "http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKnF0VhzEIvZPiaTVls3qqaTmA0DO43EtggDItzibKonqZ16m5wnyV9RzalFlny81bFyRLcM1pQUiapA/132"}
-      ]
+      data.learning_users
     end
   end
 end

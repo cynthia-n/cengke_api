@@ -31,4 +31,12 @@ class Subject < ApplicationRecord
     end
   end
 
+  def learning_users
+    Rails.cache.fetch("subject_learning_users_#{self.id}", expires_in: 5.minutes) do
+      self.status == 'pending' ? [] : User.order(id: :desc).limit(4).map{|c|{
+        avatar: c.avatar
+      }}
+    end
+  end
+
 end
