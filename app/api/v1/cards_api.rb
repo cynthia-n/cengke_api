@@ -119,7 +119,7 @@ module V1
             title: data&.title
           },
           subject: {
-            id: subject&.name
+            id: subject&.id,
             title: subject&.name,
             introduction: subject&.introduction
           },
