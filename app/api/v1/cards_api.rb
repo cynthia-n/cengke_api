@@ -109,6 +109,7 @@ module V1
         data = Card.where(id: share.source_id).first
         return return_fail('该卡片不存在') if data.blank?
         user = share.user
+        subject = data&.chapter&.subject
         return_success({
           user: {
             nickname: user.nickname,
@@ -118,8 +119,9 @@ module V1
             title: data&.title
           },
           subject: {
-            title: data&.chapter&.subject&.name,
-            introduction: data&.chapter&.subject&.introduction
+            id: subject&.name
+            title: subject&.name,
+            introduction: subject&.introduction
           },
           max_share_count: 20
         })
