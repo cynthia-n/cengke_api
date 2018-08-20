@@ -3,9 +3,7 @@ module Entities
   class Card < ::Entities::Base
     expose :id, documentation: { type: Integer, desc: "ID" }
     expose :chapter_id, documentation: { type: Integer, desc: "章节ID" }
-    expose :title, documentation: { type: String, desc: "名称" } do |data, _options|
-      data.is_locked? ? '' : data.title
-    end
+    expose :title, documentation: { type: String, desc: "名称" }
     expose :content, documentation: { type: String, desc: "内容" } do |data, _options|
       data.is_locked? ? '' : data.content
     end
