@@ -22,6 +22,7 @@ module V1
         return return_fail('该卡未解锁') if card.is_locked?(current_user.id)
         user_card = UserCard.find_or_create_by(user_id: current_user.id, card_id: card.id)
         user_card.status = 'learning'
+        user_card.start_at = Time.now
         if user_card.save
           return_fail('开始学习失败')
         else
@@ -39,6 +40,7 @@ module V1
         user_card = UserCard.where(user_id: current_user.id, card_id: card.id).first
         return return_fail('该卡未开始学习') if user_card.blank?
         user_card.status = 'finished'
+        user_card.finish_at = Time.now
         if user_card.save
           return_fail('结束学习失败')
         else
@@ -145,6 +147,7 @@ module V1
         return return_fail('该分享不存在') if share.blank?
         card = Card.where(id: share.source_id).first
         return return_fail('该卡片不存在') if card.blank?
+        return return_fail('当前分享卡片不可蹭') unless card.is_free || UserCard.where(user_id: share.user_id, card_id: card.id).present?
         return return_success({
           max_share_count: 20,
           current_share_count: Cengke.where(source_user_id: share.user_id,card: card).count
