@@ -75,12 +75,18 @@ module V1
       desc "课程卡分享"
       params do
         requires :id, type: Integer, desc: 'id'
+        requires :share_key, type: String, desc: 'share key'
       end
       post "/:id/share" do
         card = Card.where(id: params[:id]).first
         return return_fail('不存在') if card.blank?
-        share = Share.find_or_create_by(user: current_user, source: card)
-        if share.id.present?
+        share = Share.find_or_initialize_by(user: current_user, source: card)
+        if share.share_key.present?
+          return return_fail('分享码错误分享失败') if share.share_key != params[:share_key]
+        else
+          share.share_key = params[:share_key]
+        end
+        if share.save
           return_success({share_id: share.id})
         else
           return_fail('分享失败')
@@ -89,10 +95,11 @@ module V1
 
       desc "课程卡分享详情", entity: ::Entities::ShareCard
       params do
-        requires :id, type: Integer, desc: 'id'
+        requires :share_key, type: String, desc: 'share key'
+        # requires :id, type: Integer, desc: 'id'
       end
       get "/share/:id" do
-        share = Share.where(id: params[:id], source_type: "Card").first
+        share = Share.where(share_key: params[:share_key], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
         data = Card.list_with_user(current_user.id).where(id: share.source_id).first
         return return_fail('该卡片不存在') if data.blank?
@@ -101,10 +108,11 @@ module V1
 
       desc "课程卡分享首页详情", entity: ::Entities::Card
       params do
-        requires :id, type: Integer, desc: 'id'
+        requires :share_key, type: String, desc: 'share key'
+        # requires :id, type: Integer, desc: 'id'
       end
       get "/share/general/:id" do
-        share = Share.where(id: params[:id], source_type: "Card").first
+        share = Share.where(share_key: params[:share_key], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
         data = Card.where(id: share.source_id).first
         return return_fail('该卡片不存在') if data.blank?
@@ -129,10 +137,11 @@ module V1
 
       desc "蹭课程卡"
       params do
-        requires :share_id, type: Integer, desc: '分享id'
+        requires :share_key, type: String, desc: 'share key'
+        # requires :share_id, type: Integer, desc: '分享id'
       end
       post "cengke" do
-        share = Share.where(id: params[:share_id], source_type: "Card").first
+        share = Share.where(share_key: params[:share_key], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
         card = Card.where(id: share.source_id).first
         return return_fail('该卡片不存在') if card.blank?

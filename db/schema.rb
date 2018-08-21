@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180820140959) do
+ActiveRecord::Schema.define(version: 20180821123540) do
 
   create_table "cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.bigint "chapter_id"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 20180820140959) do
     t.bigint "source_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "share_key"
     t.index ["source_type", "source_id"], name: "index_shares_on_source_type_and_source_id"
     t.index ["user_id"], name: "index_shares_on_user_id"
   end
