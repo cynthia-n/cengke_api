@@ -82,7 +82,7 @@ module V1
         begin
           user = User.login_mini_program(params[:code], params[:data], params[:scene], params[:share_ticket])
           raise '登陆失败' unless user.login(remote_ip)
-          return_success({token: user.token})
+          return_success({token: user.token, id: user.id})
         rescue Exception => e
           Rails.logger.info e.to_json
           return_fail(e.message)
