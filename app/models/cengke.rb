@@ -35,7 +35,7 @@ class Cengke < ApplicationRecord
   end
 
   def set_is_new_friend
-    self.is_new_friend = Cengke.where(source_user_id: self.source_user_id, user_id: self.user_id).present?
+    self.is_new_friend = Cengke.where(source_user_id: self.source_user_id, user_id: self.user_id).blank?
   end
 
   def user_unlock_card
