@@ -98,7 +98,7 @@ module V1
         requires :share_key, type: String, desc: 'share key'
         # requires :id, type: Integer, desc: 'id'
       end
-      get "/share/:id" do
+      get "/share" do
         share = Share.where(share_key: params[:share_key], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
         data = Card.list_with_user(current_user.id).where(id: share.source_id).first
@@ -111,7 +111,7 @@ module V1
         requires :share_key, type: String, desc: 'share key'
         # requires :id, type: Integer, desc: 'id'
       end
-      get "/share/general/:id" do
+      get "/share/general" do
         share = Share.where(share_key: params[:share_key], source_type: "Card").first
         return return_fail('该分享不存在') if share.blank?
         data = Card.where(id: share.source_id).first
