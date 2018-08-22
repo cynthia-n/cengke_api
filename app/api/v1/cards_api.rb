@@ -147,7 +147,7 @@ module V1
         return return_fail('该分享不存在') if share.blank?
         card = Card.where(id: share.source_id).first
         return return_fail('该卡片不存在') if card.blank?
-        return return_fail('当前分享卡片不可蹭') unless card.is_free || UserCard.where(user_id: share.user_id, card_id: card.id).present?
+        # return return_fail('当前分享卡片不可蹭') unless card.is_free || UserCard.where(user_id: share.user_id, card_id: card.id).present?
         return return_success({
           max_share_count: 20,
           current_share_count: Cengke.where(source_user_id: share.user_id,card: card).count
