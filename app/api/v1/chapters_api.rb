@@ -68,7 +68,7 @@ module V1
       params do
         requires :reward_id, type: Integer, desc: 'id'
       end
-      get "reward_receive" do
+      post "reward_receive" do
         data = Reward.where(user_id: current_user.id, id: params[:reward_id]).first
         return return_fail('不存在') if data.blank?
         if data.receive
