@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180821123540) do
+ActiveRecord::Schema.define(version: 20180823151304) do
 
   create_table "cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.bigint "chapter_id"
@@ -85,6 +85,17 @@ ActiveRecord::Schema.define(version: 20180821123540) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_questions_on_card_id"
+  end
+
+  create_table "rewards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.bigint "user_id"
+    t.bigint "chapter_id"
+    t.string "category"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chapter_id"], name: "index_rewards_on_chapter_id"
+    t.index ["user_id"], name: "index_rewards_on_user_id"
   end
 
   create_table "shares", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -162,6 +173,8 @@ ActiveRecord::Schema.define(version: 20180821123540) do
   add_foreign_key "media", "cards"
   add_foreign_key "options", "questions"
   add_foreign_key "questions", "cards"
+  add_foreign_key "rewards", "chapters"
+  add_foreign_key "rewards", "users"
   add_foreign_key "shares", "users"
   add_foreign_key "user_cards", "cards"
   add_foreign_key "user_cards", "users"

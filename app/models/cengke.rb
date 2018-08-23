@@ -35,7 +35,13 @@ class Cengke < ApplicationRecord
   end
 
   def set_is_new_friend
-    self.is_new_friend = Cengke.where(source_user_id: self.source_user_id, user_id: self.user_id).blank?
+    self.is_new_friend = Reward.where(
+      user_id: self.source_user_id,
+      chapter_id: self.card.chapter_id
+    ).present? && Cengke.where(
+      source_user_id: self.source_user_id,
+      user_id: self.user_id
+    ).blank?
   end
 
   def user_unlock_card
@@ -51,13 +57,16 @@ class Cengke < ApplicationRecord
       is_new_friend: true,
       cards: {chapter_id: chapter_id}
     ).count
-    if chapter_new_friend_size == 3
-      Card.where(chapter_id: chapter_id, is_free: false).map{|c|
-        a = UserCard.find_or_initialize_by(user_id: self.source_user_id, card_id: c.id)
-        a.unlock_at ||= Time.now
-        a.status ||= 'unlock'
-        a.save
-      }
+    if chapter_new_friend_size >= 3
+      reward = Reward.find_or_initialize_by(
+        user_id: self.source_user_id,
+        chapter_id: chapter_id,
+        category: 'crystal_egg'
+      )
+      if reward.status == 'pending'
+        reward.status = 'actived'
+        reward.save
+      end
     end
   end
 end

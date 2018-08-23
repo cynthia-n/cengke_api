@@ -50,6 +50,34 @@ module V1
         return_success({beyond: 60 + (rand(398)/10.0)})
       end
 
+
+      desc "章节奖励情况"
+      params do
+        requires :id, type: Integer, desc: 'id'
+      end
+      get "/:id/reward" do
+        data = Reward.where(user_id: current_user.id, chapter_id: params[:id])
+        return_success(data&.map{|c|{
+          id: c.id,
+          category: c.category,
+          status: c.status
+        }} || [])
+      end
+
+      desc "章节领取奖励"
+      params do
+        requires :reward_id, type: Integer, desc: 'id'
+      end
+      get "reward_receive" do
+        data = Reward.where(user_id: current_user.id, id: params[:reward_id]).first
+        return return_fail('不存在') if data.blank?
+        if data.receive
+          return_success(true)
+        else
+          return_fail('领取失败')
+        end
+      end
+
     end
   end
 end
