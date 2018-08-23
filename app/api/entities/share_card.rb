@@ -11,7 +11,7 @@ module Entities
       data.is_locked?
     end
     expose :share_count, documentation: { type: Integer, desc: "分享数量" } do |data, _options|
-      data.is_locked? ? nil : data.share_count
+      data.share_count
     end
     expose :like_count, documentation: { type: Integer, desc: "点赞数量" }
     expose :media, documentation: { type: Array, using: "Entities::Medium", desc: "多媒体资源" }, using: "Entities::Medium" do |data, _options|
