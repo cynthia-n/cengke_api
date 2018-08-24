@@ -21,7 +21,7 @@ class Cengke < ApplicationRecord
       if Cengke.where(source_user_id: self.source_user_id, card_id: self.card_id, fail: false).count >= 20
         self.fail = true
         self.error = '该卡片已蹭完'
-      elsif Cengke.where(user_id: self.user_id, fail: false).week_cengke.count >= 5
+      elsif Cengke.where(user_id: self.user_id, fail: false).week_cengke.count >= 30
         self.fail = true
         self.error = '本周蹭课机会已用完'
       end
