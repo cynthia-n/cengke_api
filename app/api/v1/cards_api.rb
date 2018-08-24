@@ -150,7 +150,8 @@ module V1
         # return return_fail('当前分享卡片不可蹭') unless card.is_free || UserCard.where(user_id: share.user_id, card_id: card.id).present?
         return return_success({
           max_share_count: card.is_free ? nil : 20,
-          current_share_count: Cengke.where(source_user_id: share.user_id,card: card).count
+          current_share_count: Cengke.where(source_user_id: share.user_id,card: card).count,
+          current_user: true
         }) if current_user.id == share.user_id
         cengke = Cengke.find_or_initialize_by(
           user: current_user,
@@ -162,7 +163,8 @@ module V1
             max_share_count: card.is_free ? nil : 20,
             current_share_count: Cengke.where(source_user_id: share.user_id,card: card).count,
             fail: cengke.fail,
-            error: cengke.error
+            error: cengke.error,
+            current_user: false
           })
         else
           return_fail("蹭课失败", format_vali_error_data(cengke))
