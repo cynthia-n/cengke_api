@@ -64,8 +64,7 @@ class Cengke < ApplicationRecord
         category: 'crystal_egg'
       )
       if reward.status == 'pending'
-        reward.status = 'actived'
-        reward.save
+        reward.give
       end
     end
   end

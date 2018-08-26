@@ -16,13 +16,18 @@ class Reward < ApplicationRecord
   enum_status 'STATUS'
 
   def receive
+    self.status = 'received'
+    self.save
+  end
+
+  def give
     Card.where(chapter_id: chapter_id, is_free: false).map{|c|
       a = UserCard.find_or_initialize_by(user_id: self.user_id, card_id: c.id)
       a.unlock_at ||= Time.now
       a.status ||= 'unlock'
       a.save
     }
-    self.status = 'received'
+    self.status = 'actived'
     self.save
   end
 
